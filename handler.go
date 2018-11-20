@@ -24,7 +24,7 @@ func (h *Handler) GetChatIndex(c echo.Context) error {
 		return errors.New("no")
 	}
 
-	p := NewPresenter(h, user, newChats(user))
+	p := NewPresenter(h, user)
 
 	return c.Render(http.StatusOK, "chat", &p)
 }
