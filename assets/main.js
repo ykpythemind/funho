@@ -2,6 +2,21 @@
 document.addEventListener("DOMContentLoaded", function(event) {
   var loginUserId = $('#app').data('login-user-id')
 
+  // https://qiita.com/huigo/items/0efcf50c17b0b1ee27cb#%E9%96%A2%E6%95%B0%E5%9E%8B%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88
+  Vue.component('nl2br', {
+    functional: true,
+    props: ['tag','text'],
+    render: function (createElement, context) {
+      return createElement(context.props.tag,
+        context.props.text.split("\n").reduce(function(x,y){
+          if (!Array.isArray(x)){
+            return [x,createElement('br'),y];
+          }
+          return x.concat([createElement('br'),y]);
+        }));
+    }
+  });
+
   window.vm = new Vue({
     el: '#app',
     data: {
@@ -19,7 +34,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         })
         .then(() => {
           // success
-          console.log("success")
           this.sending = false;
           this.body = ""
           this.getChats(this.currentRoomId); // FIXME
@@ -36,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
       getChats: function(roomId) {
         axios.get('/chat/' + roomId)
         .then((response) => {
-          console.log(response.data)
           this.currentTab = response.data
         })
       },

@@ -50,7 +50,8 @@
                 </span>
               </div>
               <div class="col-12">
-                {{ `{{ chat.body }}` }}
+                <nl2br tag="div" :text="chat.body"></nl2br>
+                <!-- {{ `{{ chat.body | br }}` }} -->
               </div>
             </div>
           </div>
