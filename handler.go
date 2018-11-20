@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
@@ -8,6 +9,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 	"github.com/ykpythemind/funho/model"
+	"golang.org/x/net/websocket"
 )
 
 type Handler struct {
@@ -57,6 +59,15 @@ func (h *Handler) PostChat(c echo.Context) error {
 	}
 
 	h.DB.Create(newChat)
+
+	loginUserID := string(loginUser.ID)
+	for e := participants.Front(); e != nil; e = e.Next() {
+		ev := &Event{Type: "NEW_CHAT", Text: "yourself", User: loginUserID}
+		b, _ := json.Marshal(ev)
+		// FIXME: Type assertion validation :p
+		// FIXME: Error handling on Write :p
+		e.Value.(*websocket.Conn).Write(b)
+	}
 
 	return c.String(http.StatusOK, "")
 }

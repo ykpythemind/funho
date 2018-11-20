@@ -7,13 +7,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
     data: {
       body: "",
       sending: false,
-      roomId: loginUserId,
+      currentRoomId: loginUserId,
       currentTab: [],
+      loginUserId: loginUserId,
     },
     methods: {
       sendChat: function() {
         this.sending = true;
-        axios.post('/chat/' + this.roomId, {
+        axios.post('/chat/' + this.currentRoomId, {
           body: this.body
         })
         .then(() => {
@@ -21,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           console.log("success")
           this.sending = false;
           this.body = ""
-          this.getChats(this.roomId); // FIXME
+          this.getChats(this.currentRoomId); // FIXME
         })
         .catch((error) => {
           console.log(error);
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
       },
       clickTab: function(roomId) {
-        this.roomId = roomId
+        this.currentRoomId = roomId
         this.getChats(roomId)
       },
       getChats: function(roomId) {
@@ -38,6 +39,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
           console.log(response.data)
           this.currentTab = response.data
         })
+      },
+      onMessage: function(payload) {
+        var messageUserId = parseInt(payload.user);
+        console.log(payload)
+        if (this.loginUserId !== this.messageUserId) {
+          this.getChats(this.currentRoomId);
+        }
       }
     },
     filters: {
@@ -47,7 +55,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
     },
     mounted: function() {
-      this.getChats(this.roomId)
+      this.getChats(this.currentRoomId)
+
+      var url = new URL(location.href);
+      var socket = new WebSocket(`${url.protocol.replace("http", "ws")}//${url.host}/socket`);
+      socket.onmessage = e => { const payload = JSON.parse(e.data); (payload.type == "CONNECT") ? (console.log("connect")) : this.onMessage(payload) };
+      setInterval(() => socket.send(JSON.stringify({type:"KEEPALIVE"})), 40*1000); // https://devcenter.heroku.com/articles/error-codes#h15-idle-connection
+      socket.onerror = e => console.log("[ONERROR]", e);
+      socket.onclose = e => console.log("[ONCLOSE]", e);
     }
   })
 

@@ -13,6 +13,7 @@ import (
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/middleware"
 	"github.com/ykpythemind/funho/model"
+	"golang.org/x/net/websocket"
 )
 
 type Template struct {
@@ -148,6 +149,11 @@ func NewEcho(db *gorm.DB) *echo.Echo {
 	m.GET("", h.GetChatIndex)
 	m.GET("/:room_id", h.GetChats)
 	m.POST("/:room_id", h.PostChat)
+
+	e.GET("/socket", func(c echo.Context) error {
+		websocket.Handler(socket).ServeHTTP(c.Response(), c.Request())
+		return nil
+	})
 
 	// Static files
 	e.Static("/static", "assets")
