@@ -1,0 +1,65 @@
+{{define "chat"}}
+
+<a href="{{.Path.root_path}}">top</a>
+
+<div id="app" data-login-user-id="{{.LoginUser.ID}}">
+
+  <form name="form_logout" method="POST" action="/logout">
+      <a href="javascript:form_logout.submit()">logout</a>
+  </form>
+
+  <h2>
+  Hello, {{.LoginUser.Name}}!
+  </h2>
+
+  <form action="{{.Path.new_chat_path}}" method="post">
+  </form>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="form-group">
+        <textarea v-model="body" class="form-control" cols="40" rows="4"></textarea>
+      </div>
+      <div style="text-align: right;">
+        <button v-on:click="sendChat" v-bind:disabled="sending" class="btn btn-primary">送信</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4">
+      <div class="list-group" id="list-tab" role="tablist">
+        {{range .Users}}
+          {{ $active := "" }}
+          {{ if eq .ID $.LoginUser.ID }}
+            {{ $active = "active" }}
+          {{ end }}
+          <a class="list-group-item list-group-item-action {{$active}}" id="tab{{.ID}}" data-room-id="{{.ID}}" data-toggle="list" href="#tab-inner-{{.ID}}" role="tab" @click="clickTab({{.ID}})">{{.Name}}</a>
+        {{end}}
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" role="tabpanel">
+          <div id="chat-outer">
+            <div v-for="chat in currentTab" :key="chat.id" class="row chat-block">
+              <div class="col-12">
+                <b> {{ `{{ chat.user.name }}` }} </b>
+                <span class="text-muted">
+                  {{ `{{ chat.created_at | moment }}` }}
+                </span>
+              </div>
+              <div class="col-12">
+                {{ `{{ chat.body }}` }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+{{end}}
