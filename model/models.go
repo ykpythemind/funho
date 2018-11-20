@@ -17,11 +17,3 @@ type Chat struct {
 	Body       string    `json:"body"`
 	CreatedAt  time.Time `json:"created_at"`
 }
-
-func NewChat(body string, userID int, roomUserID int) *Chat {
-	return &Chat{
-		Body:       body,
-		UserID:     userID,
-		RoomUserID: roomUserID,
-	}
-}

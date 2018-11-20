@@ -1,15 +1,9 @@
 {{define "chat"}}
 
-<a href="{{.Path.root_path}}">top</a>
+<div class="container" id="app" data-login-user-id="{{.LoginUser.ID}}">
 
-<div id="app" data-login-user-id="{{.LoginUser.ID}}">
-
-  <form name="form_logout" method="POST" action="/logout">
-      <a href="javascript:form_logout.submit()">logout</a>
-  </form>
-
-  <h2>
-  Hello, {{.LoginUser.Name}}!
+  <h2 class="mt-2">
+    {{.LoginUser.Name}} 分報
   </h2>
 
   <form action="{{.Path.new_chat_path}}" method="post">
@@ -18,9 +12,10 @@
   <div class="row">
     <div class="col-12">
       <div class="form-group">
-        <textarea v-model="body" class="form-control" cols="40" rows="4"></textarea>
+        <textarea @keyup.ctrl.13="sendChat" v-model="body" class="form-control" cols="40" rows="4" placeholder="今、なにしてた？"></textarea>
       </div>
       <div style="text-align: right;">
+        <small class="text-muted">ctrl+enter</small>
         <button v-on:click="sendChat" v-bind:disabled="sending" class="btn btn-primary">送信</button>
       </div>
     </div>
@@ -38,7 +33,7 @@
         {{end}}
       </div>
     </div>
-    <div class="col-8">
+    <div class="col-8" style="height: 60vh; overflow-y: scroll;">
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" role="tabpanel">
           <div id="chat-outer">
