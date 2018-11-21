@@ -44,3 +44,11 @@
 [[constraint]]
   name = "github.com/labstack/echo-contrib"
   version = "0.5.2"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/jinzhu/configor"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/rubenv/sql-migrate"

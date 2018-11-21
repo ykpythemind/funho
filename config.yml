@@ -1,0 +1,11 @@
+appname: appname
+
+db:
+    name:     funho_development
+    user:     root
+    password: root
+    port:     3336
+
+port: 1323
+host: localhost
+config_file_env: development

@@ -2,12 +2,14 @@ package main
 
 import (
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/ykpythemind/funho/config"
 	"github.com/ykpythemind/funho/model"
 )
 
 func main() {
-	db, err := gorm.Open("sqlite3", "development.db")
+	config := config.Load()
+	db, err := gorm.Open("mysql", config.DBAddr())
 	if err != nil {
 		panic("failed to connect database")
 	}

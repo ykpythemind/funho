@@ -1,13 +1,13 @@
 
 -- +migrate Up
 CREATE TABLE users (
-  id integer PRIMARY KEY AUTOINCREMENT,
+  id integer PRIMARY KEY AUTO_INCREMENT,
   name varchar(128) NOT NULL UNIQUE,
   password varchar(128) NOT NULL
 );
 
 CREATE TABLE chats (
-  id integer PRIMARY KEY AUTOINCREMENT,
+  id integer PRIMARY KEY AUTO_INCREMENT,
   body varchar(256) NOT NULL,
   user_id integer NOT NULL,
   room_user_id integer NOT NULL,

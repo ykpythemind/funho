@@ -6,14 +6,13 @@
 
 * golang
 * dep
-* sql-migrate
 * make
 
 ### quick start
 
 ```
 $ dep ensure
-$ sql-migrate up
+$ make migrate
 $ make seeds
 $ make run
 ```

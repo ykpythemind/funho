@@ -4,14 +4,16 @@ import (
 	"errors"
 	"html/template"
 	"io"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/sessions"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/middleware"
+	"github.com/ykpythemind/funho/config"
 	"github.com/ykpythemind/funho/model"
 	"golang.org/x/net/websocket"
 )
@@ -99,17 +101,20 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 }
 
 func main() {
-	db, err := gorm.Open("sqlite3", "development.db")
+	config := config.Load()
+	log.Println("starting " + config.APPName + "...")
+
+	db, err := gorm.Open("mysql", config.DBAddr())
 	if err != nil {
 		panic("failed to connect database")
 	}
 	defer db.Close()
 
-	e := NewEcho(db)
-	e.Logger.Fatal(e.Start("localhost:1323"))
+	e := NewEcho(db, config)
+	e.Logger.Fatal(e.Start(config.Addr()))
 }
 
-func NewEcho(db *gorm.DB) *echo.Echo {
+func NewEcho(db *gorm.DB, config config.Config) *echo.Echo {
 	e := echo.New()
 
 	// This middleware should be registered before any other middleware.
