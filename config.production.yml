@@ -1,1 +1,6 @@
-config_file_env: production
+db:
+    name:     funho_production
+    user:     root
+    password: root
+    port:     3336
+env: production

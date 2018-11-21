@@ -14,7 +14,7 @@ import (
 func main() {
 	config := config.Load()
 	log.Println("migration " + config.APPName + "...")
-	log.Println("mode " + config.ConfigFileEnv)
+	log.Println("mode " + config.Env)
 
 	db, err := sql.Open("mysql", config.DBAddr())
 	if err != nil {

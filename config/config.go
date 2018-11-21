@@ -17,7 +17,7 @@ type Config struct {
 	Port string `required:"true"`
 	Host string `required:"true"`
 
-	ConfigFileEnv string `default:"development"`
+	Env string `default:"development"`
 }
 
 // DBAddr is DBAddress

@@ -103,6 +103,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 func main() {
 	config := config.Load()
 	log.Println("starting " + config.APPName + "...")
+	log.Println("  config file:" + config.Env)
 
 	db, err := gorm.Open("mysql", config.DBAddr())
 	if err != nil {

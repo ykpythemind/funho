@@ -8,4 +8,4 @@ db:
 
 port: 1323
 host: localhost
-config_file_env: development
+env: development

@@ -17,3 +17,9 @@ $ make seeds
 $ make run
 ```
 
+## mode
+
+```
+$ CONFIGOR_ENV=production make run
+```
+
