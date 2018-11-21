@@ -139,7 +139,7 @@ func NewEcho(db *gorm.DB, config config.Config) *echo.Echo {
 		if user != nil {
 			return c.Redirect(http.StatusMovedPermanently, pathForApp["chat_path"].toString())
 		}
-		return c.String(http.StatusOK, "Hello, World!")
+		return c.Redirect(http.StatusMovedPermanently, pathForApp["login_form_path"].toString())
 	})
 
 	h := Handler{DB: db}
