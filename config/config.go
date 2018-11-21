@@ -10,7 +10,7 @@ type Config struct {
 		Name     string
 		User     string `default:"root"`
 		Password string `required:"true" env:"DBPassword"`
-		Port     string `default:"3306"`
+		Port     string `default:"3306" env:"DBPort"`
 		Host     string `default:"localhost"`
 	}
 
