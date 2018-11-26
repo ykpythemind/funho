@@ -11,6 +11,7 @@
 ### quick start
 
 ```
+$ docker-compose up -d // DB用にdockerコンテナを使う場合
 $ dep ensure
 $ make migrate
 $ make seeds
